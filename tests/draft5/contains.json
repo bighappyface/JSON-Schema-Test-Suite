@@ -1,0 +1,71 @@
+[
+    {
+        "description": "contains is schema",
+        "schema": {
+            "type": "array",
+            "contains": {
+                "type": "string"
+            }
+        },
+        "tests": [
+            {
+                "description": "no items",
+                "data": [],
+                "valid": false
+            },
+            {
+                "description": "wrong type of items",
+                "data": [5, null],
+                "valid": false
+            },
+            {
+                "description": "single item correct type",
+                "data": ["foo"],
+                "valid": true
+            },
+            {
+                "description": "multiple items correct type last",
+                "data": [5, null, "foo"],
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "contains is array of schemas",
+        "schema": {
+            "type": "array",
+            "items": {"type": "object"},
+            "contains": [
+                {"required": ["propA"]},
+                {"required": ["propB"]}
+            ]
+        },
+        "tests": [
+            {
+                "description": "no items",
+                "data": [],
+                "valid": false
+            },
+            {
+                "description": "no match for second entry",
+                "data": [{"propA": true}],
+                "valid": false
+            },
+            {
+                "description": "entries in contains must describe different items",
+                "data": [{"propA": true, "propB": true}],
+                "valid": false
+            },
+            {
+                "description": "multiple items correct",
+                "data": [{"propA": true}, {"propB": true}],
+                "valid": true
+            },
+            {
+                "description": "multiple items, multiple properties correct",
+                "data": [{"propA": true}, {"propA": true, "propB": true}],
+                "valid": true
+            }
+        ]
+    }
+]
